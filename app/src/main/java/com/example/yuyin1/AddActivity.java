@@ -108,6 +108,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         mSharedPreferences = getSharedPreferences(getPackageName(),	MODE_PRIVATE);
         mToast = Toast.makeText(this,"",Toast.LENGTH_SHORT);
+
         findViewById(R.id.yuyin).setOnClickListener(AddActivity.this);
         date2 = (EditText)findViewById(R.id.date1);
         name = (EditText)findViewById(R.id.name1);
@@ -179,6 +180,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         ;
     }
+    //点击语音识别按钮逻辑
     @Override
     public void onClick(View view) {
         if( null == mAsr ){
@@ -310,7 +312,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     };
     /**
-     * 参数设置
+     * 语音识别参数设置
      * @return
      */
     public boolean setParam(){
@@ -338,6 +340,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         mAsr.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory()+"/msc/asr.wav");
         return result;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -347,7 +350,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         // EasyPermissions handles the request result.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
-
+    //以下四种方法是使用谷歌的easypermissions的接口需要实现的四种方法
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
@@ -401,6 +404,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
         return format.format(date);
     }
+
+    /**
+     * 初始化日历控件
+     */
     private void initTimePicker() {//Dialog 模式下，在底部弹出
 
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
@@ -448,10 +455,16 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * 扫一扫界面返回的识别结果用此函数接收
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE) {
-            //处理扫描结果（在界面上显示）
+             //处理扫描结果（在界面上显示）
             if (null != data) {
                 Bundle bundle = data.getExtras();
                 if (bundle == null) {
@@ -501,7 +514,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private boolean hasCameraPermission() {
         return EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA);
     }
-
+    //动态获取相关权限
     private void requestPermissions() {
         //要获取的权限
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};

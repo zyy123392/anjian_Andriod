@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+         //初始化数据
         initMessage();
+        //初始化语音识别
         SpeechUtility.createUtility(MainActivity.this, SpeechConstant.APPID + "=5ce20495");
+        //动态表单使用的是RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         messageList = DataSupport.findAll(Message.class);
         adapter = new MessageAdapter(messageList);
     }
-
+//重新返回此界面时会调用onRestart生命周期函数
     @Override
     protected void onRestart() {
         super.onRestart();
