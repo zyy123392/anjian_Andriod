@@ -1,4 +1,6 @@
-package com.example.yuyin1;
+package com.example.yuyin1.util;
+
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,7 +45,7 @@ public class JsonParser {
 			JSONArray words = joResult.getJSONArray("ws");
 			for (int i = 0; i < words.length(); i++) {
 				JSONArray items = words.getJSONObject(i).getJSONArray("cw");
-				for(int j = 0; j < items.length(); j++)
+				for(int j = 0; j < 1; j++)
 				{
 					JSONObject obj = items.getJSONObject(j);
 					if(obj.getString("w").contains("nomatch"))
@@ -51,8 +53,9 @@ public class JsonParser {
 						ret.append("没有匹配结果.");
 						return ret.toString();
 					}
-					ret.append("【结果】" + obj.getString("w"));
-					ret.append("【置信度】" + obj.getInt("sc"));
+					ret.append(obj.getString("w"));
+					//ret.append("【置信度】" + obj.getInt("sc"));
+					Log.d("ddd",ret.toString());
 					ret.append("\n");
 				}
 			}

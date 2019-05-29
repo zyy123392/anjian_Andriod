@@ -1,4 +1,4 @@
-package com.example.yuyin1;
+package com.example.yuyin1.adapter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.yuyin1.R;
+import com.example.yuyin1.entity.Message;
 
 import java.util.List;
 
@@ -79,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                         m.delete();
                         mList.remove(position);
                         notifyItemRemoved(position);
-                        notifyDataSetChanged();
+
 
                     }
                 });

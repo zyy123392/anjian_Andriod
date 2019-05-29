@@ -1,4 +1,4 @@
-package com.example.yuyin1;
+package com.example.yuyin1.action;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -26,13 +24,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.baidu.speech.EventListener;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 
 
+import com.example.yuyin1.entity.Message;
+import com.example.yuyin1.R;
+import com.example.yuyin1.util.FucUtil;
+import com.example.yuyin1.util.JsonParser;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.GrammarListener;
 import com.iflytek.cloud.InitListener;
@@ -48,7 +49,8 @@ import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -274,10 +276,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     text = JsonParser.parseGrammarResult(result.getResultString());
                 }else {
                     text = JsonParser.parseLocalGrammarResult(result.getResultString());
+
                 }
 
                 // 显示
+
                 ((EditText)findViewById(R.id.goods1)).setText(text);
+                cut(text);
             } else {
                 Log.d(TAG, "recognizer result : null");
             }
@@ -473,8 +478,16 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    flightId.setText(String.valueOf(result));
-                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    String[] results = result.split(" ");
+                    Log.d("scan",result);
+                    if(results.length < 1){
+                        flightId.setText("扫描失败");
+                    }else{
+                        flightId.setText(String.valueOf(results[0]));
+                        name.setText(String.valueOf(results[1]));
+
+                    }
+
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
@@ -501,7 +514,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             // Have permission, do the thing!
             Intent intent = new Intent(this, CaptureActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
-            Toast.makeText(this, "TODO: Camera things", Toast.LENGTH_LONG).show();
+
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(
@@ -521,12 +534,56 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         if (EasyPermissions.hasPermissions(this, perms)) {
             // Have permissions, do the thing!
 
-            Toast.makeText(this, "TODO: Location and Contacts things", Toast.LENGTH_LONG).show();
+
         } else {
             // Ask for both permissions
             EasyPermissions.requestPermissions(this, "想要的权限",
                     RC_LOCATION_CONTACTS_PERM, perms);
         }
+    }
+
+    private void cut(String res){
+        // 按指定模式在字符串查找
+
+        String pattern = "[\\u4e00-\\u9fa5]{4}(\\D*)数量为(\\d+) 选择(.*)开机员是(.*)开箱员是(.*)";
+
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(res);
+        if (m.find( )) {
+            Log.d("aaa","Found value: " + m.group(1) );
+            ((EditText)findViewById(R.id.goods1)).setText(m.group(1));
+            Log.d("aaa","Found value: " + m.group(2) );
+            ((EditText)findViewById(R.id.amount1)).setText(m.group(2));
+            Log.d("aaa","Found value: " + m.group(3) );
+            if (m.group(3).equals("暂存")){
+                ((RadioButton)findViewById(R.id.zancunID)).setChecked(true);
+
+            }else if (m.group(3).equals("放弃")){
+                ((RadioButton)findViewById(R.id.fangqiID)).setChecked(true);
+            }else if (m.group(3).equals("退回")){
+                ((RadioButton)findViewById(R.id.tuihuiID)).setChecked(true);
+            }else if (m.group(3).equals("托运")){
+                ((RadioButton)findViewById(R.id.tuoyunID)).setChecked(true);
+            }else if (m.group(3).equals("移交")){
+                ((RadioButton)findViewById(R.id.yijiaoID)).setChecked(true);
+            }else if (m.group(3).equals("携带")){
+                ((RadioButton)findViewById(R.id.xiedaiID)).setChecked(true);
+            }else if (m.group(3).equals("限量")){
+                ((RadioButton)findViewById(R.id.xianliangID)).setChecked(true);
+            }
+
+            Log.d("aaa","Found value: " + m.group(4) );
+            ((EditText)findViewById(R.id.starter1)).setText(m.group(4));
+            Log.d("aaa","Found value: " + m.group(5) );
+            ((EditText)findViewById(R.id.boxer1)).setText(m.group(5));
+        } else {
+            Log.d("aaa","NO MATCH");
+            ((EditText)findViewById(R.id.goods1)).setText("请重新输入");
+        }
+
     }
 
 

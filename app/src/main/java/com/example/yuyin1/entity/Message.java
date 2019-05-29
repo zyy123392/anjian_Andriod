@@ -1,4 +1,4 @@
-package com.example.yuyin1;
+package com.example.yuyin1.entity;
 
 import org.litepal.crud.DataSupport;
 

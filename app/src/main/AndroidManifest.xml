@@ -11,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AddActivity"
+            android:name=".action.AddActivity"
             android:label="@string/title_activity_add"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".action.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

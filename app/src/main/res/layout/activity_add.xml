@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddActivity"
+    tools:context=".action.AddActivity"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -167,9 +167,10 @@
 
             <EditText
                 android:id="@+id/amount1"
-                android:inputType="text"
+                android:inputType="number"
                 android:layout_weight="5"
                 android:layout_width="150dp"
+
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>

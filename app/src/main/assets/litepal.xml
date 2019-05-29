@@ -32,7 +32,7 @@
         </list>
     -->
     <list>
-        <mapping class="com.example.yuyin1.Message"></mapping>
+        <mapping class="com.example.yuyin1.entity.Message"></mapping>
     </list>
 
     <!--

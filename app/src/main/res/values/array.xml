@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spingarr">
+        <item>航班号</item>
+        <item>姓名</item>
+        <item>物品品名</item>
+        <item>开机员</item>
+        <item>开箱员</item>
+    </string-array>
+</resources>
