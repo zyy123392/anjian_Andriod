@@ -11,26 +11,22 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/add"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:background="@android:color/darker_gray"
-            android:text="@string/add"
-            android:textSize="20sp" />
+
         <LinearLayout
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:focusable="true"
+
             android:focusableInTouchMode="true">
             <Spinner
                 android:layout_marginTop="10dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="140dp"
+
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner"
                 android:entries="@array/spingarr"
@@ -39,7 +35,7 @@
             <SearchView
                 android:id="@+id/searchView"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
                 android:queryHint="搜索内容" />
@@ -70,6 +66,7 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:background="@drawable/bg_header"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal">
                     <TextView
@@ -249,7 +246,10 @@
 
                                 android:text="限量"
                                 android:textSize="13sp" />
-
+                            <View
+                                android:layout_width="1.5dp"
+                                android:layout_height="match_parent"
+                                android:background="#000000" />
                         </LinearLayout>
                     </LinearLayout>
 

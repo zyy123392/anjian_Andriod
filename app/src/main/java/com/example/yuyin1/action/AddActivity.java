@@ -2,6 +2,7 @@ package com.example.yuyin1.action;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -28,7 +31,6 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
-
 
 import com.example.yuyin1.entity.Message;
 import com.example.yuyin1.R;
@@ -112,6 +114,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         mToast = Toast.makeText(this,"",Toast.LENGTH_SHORT);
 
         findViewById(R.id.yuyin).setOnClickListener(AddActivity.this);
+
         date2 = (EditText)findViewById(R.id.date1);
         name = (EditText)findViewById(R.id.name1);
         flightId = (EditText) findViewById(R.id.flightId1);
@@ -222,8 +225,55 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 }
                 break;
 
+
         }
     }
+
+    /**
+     * 点击空白区域时隐藏键盘
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 初始化监听器。
      */
@@ -480,7 +530,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     String[] results = result.split(" ");
                     Log.d("scan",result);
-                    if(results.length < 1){
+                    if(results.length == 1){
                         flightId.setText("扫描失败");
                     }else{
                         flightId.setText(String.valueOf(results[0]));

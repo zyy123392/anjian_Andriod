@@ -32,9 +32,8 @@ dependencies {
     implementation 'org.litepal.android:core:1.3.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.8'
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     implementation 'pub.devrel:easypermissions:2.0.1'
-
     implementation 'com.android.support:multidex:1.0.0'
     implementation files('libs\\bdasr_V3_20190327_58c9395.jar')
     implementation files('libs\\Msc.jar')
